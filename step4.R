@@ -13,7 +13,7 @@
       return("Miss.")
     else if(length(grep("Mrs.", Name))>0 | length(grep("Mme.", Name))>0 | length(grep("the Countess.", Name))>0) #important to put Mrs before Mr since otherwise all Mrs. will be taken as Mr.
       return("Mrs.")
-    else if(length(grep("Mr.", Name))>0 | length(grep("Don.", Name))>0 | length(grep("Jonkheer.", Name))>0)
+    else if(length(grep("Mr.", Name))>0 | length(grep("Don.", Name))>0 | length(grep("Jonkheer.", Name))>0) #Jonkheer and Don are equivalent to Mr.
       return("Mr.")
     else if(length(grep("Master.", Name))>0)
       return("Master.")
