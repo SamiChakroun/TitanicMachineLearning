@@ -16,6 +16,7 @@
   set.seed(1111) #For reproducibility
   rf.1 = randomForest(x = rf.train.1, y = rf.label, importance = TRUE) #Train a Random Forest
   rf.1
+  
   #Interpretation:
   #Out of bag value (OOB)
   #OOB estimate of  error rate: 16.61%
@@ -32,7 +33,6 @@
   #RANDOM FOREST 2
   #================
   
-  
   #Train a Random Forest with less features by removing the least significant ones
   rf.train.2 = data.clean[1:891,-c(1,5,6)]
   rf.label = as.factor(train$Survived)
@@ -40,6 +40,7 @@
   set.seed(1111) #For reproducibility
   rf.2 = randomForest(x = rf.train.2, y = rf.label, importance = TRUE) #Train a Random Forest
   rf.2
+  
   #Interpretation:
   #OOB estimate of  error rate: 16.5%
   #We got a smaller error rate which is good!
@@ -58,6 +59,7 @@
   set.seed(1111) #For reproducibility
   rf.3 = randomForest(x = rf.train.3, y = rf.label, importance = TRUE) #Train a Random Forest
   rf.3
+  
   #Interpretation:
   #OOB estimate of  error rate: 16.05%
   #Even smaller error rate!
@@ -65,7 +67,6 @@
   varImpPlot(rf.3)
   #Embarked is now not very significant so let's remove it and see!
   #Now, what if we remove Age?
-  
   
   #================
   #RANDOM FOREST 4
@@ -102,7 +103,6 @@
   
   varImpPlot(rf.5)
   
-  
   #==============================================================================
   # Subset Selection - Cross Validation
   #==============================================================================
@@ -133,7 +133,6 @@
   #We have a good accuracy of 83.49% which is a bit worse than what we predicted without the cross validation.
   #Accuracy without cv was 100 - 16.05 = 83.95
   
-  
   #====================
   # Cross Validation 2
   #====================
@@ -154,5 +153,4 @@
   
   # Check the results
   rf.5.cv.2
-  
   
