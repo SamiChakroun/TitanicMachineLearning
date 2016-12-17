@@ -70,3 +70,6 @@
   #Passengers of small family size (FamilySize <= 4) 
   #Passengers of big family size (FamilySize>=5)
 #===================================================================================================================
+
+  
+  #In order to make our results more accurate, we need to perform cross validation to choose the best subsets
