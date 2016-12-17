@@ -65,9 +65,10 @@
     geom_point(shape=4) +
     ggtitle("Distribution of Fare among classes showing who survived and who died") +
     labs(fill = "Survived") 
-<<<<<<< HEAD
   
+#=====================================================================================================================
 #The purpose of these plots is to detect any patterns explaining survival according to the different features we have.
-=======
+#=====================================================================================================================
   
 >>>>>>> fbceeaef6787e3f2b49c909054670167b9c50c24
+  
