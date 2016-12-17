@@ -2,7 +2,9 @@
 # Getting Started - Extracting Features
 #==============================================================================
 
+  #=================
   #Title feature
+  #=================
   
   #Function to extract titles from names
   extractTitle = function(Name) {
@@ -44,7 +46,9 @@
   
   #After checking the NA's we add some types of titles we didn't notice before such as Dr. , Rev. and Mme.
   
+  #===================
   #FamilySize feature
+  #===================
   
   #Get the SibSp and Parch values and sum them to get family size
   temp.sibsp = c(train$SibSp, test$SibSp)
