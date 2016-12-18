@@ -65,7 +65,6 @@
   #Even smaller error rate!
   
   varImpPlot(rf.3)
-  #Embarked is now not very significant so let's remove it and see!
   #Now, what if we remove Age?
   
   #================
@@ -141,11 +140,11 @@
   
   #First we create our 5 folds from our rf.label
   #Stratification is done automatically in this step. This should give us more accurate results
-  #Same proportions of survived and died
+  #Same proportions of survived and died in each fold
   cv.folds.5 = createMultiFolds(rf.label, k = 5, times = 10)
   
   # Set up caret's trainControl object per above.
-  control.2 = trainControl(method = "repeatedcv", number = 5, repeats = 10, index = cv.folds.10)
+  control.2 = trainControl(method = "repeatedcv", number = 5, repeats = 10, index = cv.folds.5)
   
   # Set seed for reproducibility and train
   set.seed(1111)
@@ -153,4 +152,49 @@
   
   # Check the results
   rf.5.cv.2
+  
+  #We got almost the same accuracy (83.47%) which is good.
+  
+  
+  #=======================
+  # Kaggle submission 1
+  #=======================
+  
+  # Subset our test records and features
+  submit = data.clean[892:1309, -c(1,5,6,8,3)]
+  
+  # Make predictions
+  rf.5.preds = predict(rf.5, submit)
+  table(rf.5.preds) #looks correct: 2/3 by 1/3 almost.
+  
+  # Write out a CSV file for submission to Kaggle
+  submission = data.frame(PassengerId = rep(892:1309), Survived = rf.5.preds)
+  
+  write.csv(submission, file = "Submission_1_Sami.csv", row.names = F)
+  
+  # This submission gave a score of 0.77990.
+  # 77.99% is different from our accuracy we predicted from the training data.
+  # This means we have some overfitting in our modelling.
+  
+  #=======================
+  # Kaggle submission 2
+  #=======================
+  
+  # Let's try a submission with the model that had one more variable and gave the same accuracy.
+  
+  # Subset our test records and features
+  submit = data.clean[892:1309, -c(1,5,6,8)]
+  
+  # Make predictions
+  rf.5.preds = predict(rf.3, submit)
+  table(rf.5.preds) #looks correct: 2/3 by 1/3 almost.
+  
+  # Write out a CSV file for submission to Kaggle
+  submission = data.frame(PassengerId = rep(892:1309), Survived = rf.5.preds)
+  
+  write.csv(submission, file = "Submission_2_Sami.csv", row.names = F)
+  
+  # This submission improved the score by 0.00957.
+  # The score is now 0.78947
+  # We still have some overfitting but it seems that Age is an important feature.
   
