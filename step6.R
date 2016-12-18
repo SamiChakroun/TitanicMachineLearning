@@ -6,8 +6,12 @@
   
   #Check their indices
   names(data.combined)
+
+  #3 for name, 8 for Ticket, 10 for Cabin
+
   #Make a clean copy of the data
   data.clean = data.combined[,-c(3,8,10)]
+  
   #The result is good.
   str(data.clean)
   
@@ -15,7 +19,12 @@
   data.train = data.clean[1:891,]
   data.test = data.clean[892:nrow(data.clean),]
   
+  #=======================
   #Best subset selection
+  #=======================
+  
+  #Since our number of features is relatively small (around 10 features), we can perform best subset selection without
+  #worrying about computational cost. The function will build 2^10 models very quickly.
   
   #Load the leaps library
   library(leaps)
@@ -61,35 +70,50 @@
   #The results confirm our assumptions but also are a bit surprising.
   
   #The best features seem to be by far Pclass and Title.
-  #Gender also is significant but not that much which is understandable since title gives an idea about the gender.
+  #Gender also is significant but not that much which is understandable since Title gives an idea about the gender.
   
   #SibSp is surprisingly significant. But we see that FamilySize is even more significant.
   #The plotting suggests that we should change our FamilySize feature in the following way:
-  #FamilySize should be a factor of 3 levels
-  #Passengers traveling alone (FamilySize=1)
-  #Passengers of small family size (FamilySize <= 4) 
-  #Passengers of big family size (FamilySize>=5)
+    #FamilySize should be a factor of 3 levels
+      #Passengers traveling alone (FamilySize=1)
+      #Passengers of small family size (FamilySize <= 4) 
+      #Passengers of big family size (FamilySize>=5)
+    #This is due to the fact that larger families tend to perish together.
 #===================================================================================================================
 
   
+  #============================================================================================================
   #In order to make our results more accurate, we need to perform cross validation to choose the best subsets
+  #============================================================================================================
   
-  library(caret)
   
+  #Since there is no predict function for regsubsets we create one
+  predict.regsubsets = function (object ,newdata ,id ,...) {
+    form=as.formula(object$call[[2]])
+    mat=model.matrix(form,newdata)
+    coefi=coef(object ,id=id)
+    xvars=names(coefi)
+    mat[,xvars]%*%coefi
+  }
+  
+  k=10
   set.seed(1111)
+  folds=sample(1:k,nrow(data.train),replace=TRUE)
+  cv.errors=matrix(NA,k,10, dimnames=list(NULL, paste(1:10)))
   
-  cv.folds.10 = createMultiFolds(regfit.full, k = 10, times = 10)
   
-  # Set up caret's trainControl object per above.
-  control.1 = trainControl(method = "repeatedcv", number = 10, repeats = 10, index = cv.folds.10)
+  for(j in 1:k){
+    best.fit = regsubsets(Survived~., data=data.train[folds!=j,])
+    for(i in 1:10){
+      pred=predict(best.fit,data.train[folds==j,],id=i) 
+      cv.errors[j,i]=mean((as.integer(data.train$Survived[folds==j])-pred)^2)
+      }
+  }
+                           
+  mean.cv.errors=apply(cv.errors ,2,mean)
+  mean.cv.errors
   
-  # Drop the NA factor
-  data.train$Survived = factor(data.train$Survived)
+  par(mfrow=c(1,1))
+  plot(mean.cv.errors ,type="b")
   
-  # Set seed for reproducibility and train
-  set.seed(1111)
-  bs.10.cv.1 = train(x = data.train[,-1], y = data.train$Survived, method ="bayesglm", trControl = control.1)
-  
-  # Check the results
-  bs.10.cv.1
   
