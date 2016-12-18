@@ -79,6 +79,14 @@
   
   #We can now do some plotting to see what it gives us when it comes to survival!
   
+  #Missing value?
+  
+  summary(data.combined) #1 missing value in Fare. We will replace it by the median.
+  
+  fare.median = summary(data.combined$Fare)[3]
+  
+  data.combined[which(is.na(data.combined$Fare)),"Fare"] = fare.median
+  
   #Outliers
   
   #We don't seem to have any particular outliers. Except for one person who paid 512 pounds for their ticket and survived.
