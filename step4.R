@@ -44,7 +44,8 @@
   #We have some NA's in Title so let's see what these are
   data.combined[which(data.combined$Title == "NA"),]
   
-  #After checking the NA's we add some types of titles we didn't notice before such as Dr. , Rev. and Mme.
+  #After checking the NA's we add to the extractTitle function some types of titles that we didn't notice before such as Dr. , Rev. and Mme.
+  #That is why we have no NA's now
   
   #===================
   #FamilySize feature
@@ -53,8 +54,7 @@
   #Get the SibSp and Parch values and sum them to get family size
   temp.sibsp = c(train$SibSp, test$SibSp)
   temp.parch = c(train$Parch, test$Parch)
-  data.combined$FamilySize = as.factor(temp.sibsp + temp.parch + 1) #+1 for the passenger we're considering
-  
+  data.combined$FamilySize = as.factor(temp.sibsp + temp.parch + 1) # +1 for the passenger we're considering
   
   # Visualize it to see if it is predictive
   
