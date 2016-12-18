@@ -59,6 +59,7 @@
     ggtitle("Distribution of age among passengers who survived and passenger who perished") +
     labs(fill = "Survived") 
 
+  #we can see the overfitting due to replacing NA ages of Mr. with the median of their category.
   
   #Hypothesis: Fare could be indicative of survival or not
   ggplot(data.combined[1:891,], aes(x=Fare, y=Pclass, color = Survived)) +
