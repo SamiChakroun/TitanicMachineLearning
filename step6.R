@@ -73,3 +73,23 @@
 
   
   #In order to make our results more accurate, we need to perform cross validation to choose the best subsets
+  
+  library(caret)
+  
+  set.seed(1111)
+  
+  cv.folds.10 = createMultiFolds(regfit.full, k = 10, times = 10)
+  
+  # Set up caret's trainControl object per above.
+  control.1 = trainControl(method = "repeatedcv", number = 10, repeats = 10, index = cv.folds.10)
+  
+  # Drop the NA factor
+  data.train$Survived = factor(data.train$Survived)
+  
+  # Set seed for reproducibility and train
+  set.seed(1111)
+  bs.10.cv.1 = train(x = data.train[,-1], y = data.train$Survived, method ="bayesglm", trControl = control.1)
+  
+  # Check the results
+  bs.10.cv.1
+  
