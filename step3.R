@@ -22,7 +22,7 @@
   
   #Median of "Master." for missing values
   master = data.combined[which(data.combined$Title == "Master."),]
-  median.master = summary(master$Age)[3]
+  median.master = summary(master$Age)[3] #Summary[3] corresponds to the median
   
   #Median of "Mrs." for missing values
   mrs = data.combined[which(data.combined$Title == "Mrs."),]
@@ -83,3 +83,4 @@
   
   #We don't seem to have any particular outliers. Except for one person who paid 512 pounds for their ticket and survived.
   #We won't remove this row since every passenger matters.
+  
