@@ -1,5 +1,5 @@
 #==============================================================================
-# Subset Selection - Modelling
+# Subset Selection - Modelling with Logistic Regression
 #==============================================================================
 
   #Since it is a classification problem, we will first try to predict using a logistical regression model and see the accuracy
@@ -42,7 +42,7 @@
   # Cross validation of glm
   #===============================
   
-  #In order to make our results more accurate, we need to perform cross validation on our logistical regression model
+  #In order to check our results accuracy, we need to perform cross validation on our logistical regression model
   
   #Load caret library
   library(caret)
