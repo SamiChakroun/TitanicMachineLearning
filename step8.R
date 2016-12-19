@@ -7,10 +7,11 @@
   #create a logistic regression model with the training data
   
   #Predicting survival based on passenger the 4 features we picked using best subset selection
-  # Title, Pclass, FamilySize and Sex
+  #Title, Pclass, FamilySize and Sex
   logistic.model = glm(Survived~Title+Pclass+FamilySize+Sex, family = "binomial", data=data.train)
   
   #Plot the model
+  par(mfrow= c(2,2))
   plot(logistic.model)
 
   #Summary
@@ -19,8 +20,8 @@
   #generate predictions for training data using the predict method of the logistic model
   training_predictions = predict(logistic.model, type = "response")
   
-  #compute training error use an outcome cutoff at 0.5
-  training_error = sum((training_predictions >= 0.5) != 1)/nrow(data.train)
+  #compute training error use an outcome cutoff of 0.5
+  training_error = sum(training_predictions >= 0.5)/nrow(data.train)
   #Training error is is very very high compared Random Forests
   training_error
   
@@ -29,14 +30,23 @@
   
   #using a probability cutoff of 0.5 for outcome of survived, default missing to deceased
   test_predictions[test_predictions >=0.5] = 1
-  test_predictions[ test_predictions != 1] = 0
-  test_predictions[is.na(test_predictions)] = 0
+  test_predictions[test_predictions < 0.5] = 0
   
+  #Check the results
   table(test_predictions)
   
-  #Conclusion: Logistic regression is fast but its not accurate enough in predicting survival.
-  #It is better in this case to stick to Random Forest since it gave us a much better accuracy.
+  #========================================
+  # Kaggle submission Logistic regression
+  #========================================
   
+  # Write out a CSV file for submission to Kaggle
+  submission4 = data.frame(PassengerId = rep(892:1309), Survived = test_predictions)
+  
+  write.csv(submission4, file = "Submission_4_Sami.csv", row.names = F)
+  
+  #This submission scored 0.77512
+  #Conclusion: Logistic regression is fast but its not accurate enough in predicting survival.
+  #It is better in this case to stick to Random Forests since it gave us a better accuracy.
 
   #===============================
   # Cross validation of glm
@@ -47,7 +57,7 @@
   #Load caret library
   library(caret)
   
-  cv.folds.10 = createMultiFolds(regfit.full, k = 10, times = 10)
+  cv.folds.10 = createMultiFolds(logistic.model, k = 10, times = 10)
   
   # Set up caret's trainControl object per above.
   control.2 = trainControl(method = "repeatedcv", number = 10, repeats = 10)
@@ -66,7 +76,7 @@
   PredTrain = predict(glm.10.cv.1, newdata=data.train, type="raw") 
   table(data.train$Survived, PredTrain)
   
-  #almost the same accuracy as given by bs.10.cv.1
-  accuracy = (1 - (86/485)) * 100
+  # Almost the same accuracy as given by bs.10.cv.1
+  accuracy = (1 - (86+64)/(485+256)) * 100
   accuracy
   

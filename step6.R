@@ -66,24 +66,12 @@
   plot(regfit.bwd ,scale ="Cp")
   plot(regfit.bwd ,scale ="bic")
   
-#===================================================================================================================
-  #The results confirm our assumptions but also are a bit surprising.
-  
-  #The best features seem to be by far Pclass and Title.
-  #Gender also is significant but not that much which is understandable since Title gives an idea about the gender.
-  
-  #SibSp is surprisingly significant. But we see that FamilySize is even more significant.
-  #The plotting suggests that we should change our FamilySize feature in the following way:
-    #FamilySize should be a factor of 3 levels
-      #Passengers traveling alone (FamilySize=1)
-      #Passengers of small family size (FamilySize <= 4) 
-      #Passengers of big family size (FamilySize>=5)
-    #This is due to the fact that larger families tend to perish together.
-#===================================================================================================================
-
+#============================================
+# Interpretation of results in the report
+#============================================
   
   #============================================================================================================
-  #In order to make our results more accurate, we need to perform cross validation to choose the best subsets
+  # In order to make our results more accurate, we need to perform cross validation to choose the best subsets
   #============================================================================================================
   
   

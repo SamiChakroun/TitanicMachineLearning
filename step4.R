@@ -59,7 +59,7 @@
   # Visualize it to see if it is predictive
   
   #install package if needed
-  install.packages("ggplot2")
+  #install.packages("ggplot2")
   
   #load ggplot2 library for visualizations
   library(ggplot2)
